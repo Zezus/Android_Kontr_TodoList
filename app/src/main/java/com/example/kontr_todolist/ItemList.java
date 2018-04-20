@@ -3,8 +3,6 @@ package com.example.kontr_todolist;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.UUID;
-
 /**
  * Created by СадвакасовР on 19.04.2018.
  */
@@ -22,7 +20,7 @@ public class ItemList implements Parcelable {
             return new ItemList[size];
         }
     };
-    private UUID id;
+    private int id;
     private String name;
     private String title;
 
@@ -32,16 +30,16 @@ public class ItemList implements Parcelable {
     public ItemList(Parcel in) {
         String[] data = new String[4];
         in.readStringArray(data);
-        data[0] = id.toString();
+        data[0] = String.valueOf(id);
         data[1] = name;
         data[2] = title;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -68,6 +66,6 @@ public class ItemList implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeStringArray(new String[]{id.toString(), name, title});
+        parcel.writeStringArray(new String[]{String.valueOf(id), name, title});
     }
 }

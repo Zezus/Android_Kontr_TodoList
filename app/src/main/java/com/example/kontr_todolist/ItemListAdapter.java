@@ -22,6 +22,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     private Dialog dialog;
 
 
+
     public ItemListAdapter(Context context, List<ItemList> itemList, MainActivity mainActivity) {
         this.context = context;
         this.itemList = itemList;
@@ -34,6 +35,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.fragment_item_list);
+
+
         return new ViewHolder(view);
     }
 

@@ -1,8 +1,11 @@
 package com.example.kontr_todolist;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by СадвакасовР on 19.04.2018.
@@ -35,4 +38,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
+    public void addInfo(String name, String title, SQLiteDatabase db) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FULL_NAME_COLUMN, name);
+        contentValues.put(FULL_TITLE_COLUMN, title);
+        db.insert(LISTS_TABLE, null, contentValues);
+        Log.e("DATABESE ", "INSERTED");
+    }
+
+    public Cursor getInfo(SQLiteDatabase db) {
+        Cursor cursor;
+        String[] arr_Strings = {FULL_NAME_COLUMN, FULL_TITLE_COLUMN};
+        cursor = db.query(LISTS_TABLE, arr_Strings, null, null, null, null, null);
+        return cursor;
+
+    }
+
+
 }

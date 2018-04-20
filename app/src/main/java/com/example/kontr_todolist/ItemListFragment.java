@@ -1,6 +1,8 @@
 package com.example.kontr_todolist;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 
 /**
@@ -18,6 +19,9 @@ import java.util.UUID;
  */
 public class ItemListFragment extends Fragment {
 
+    SQLiteDatabase sqLiteDatabase;
+    DataBaseHelper dataBaseHelper;
+    Cursor cursor;
     private ArrayList<ItemList> itemLists;
     private RecyclerView itemRecyclerView;
     private ItemListAdapter itemListAdapter;
@@ -35,11 +39,27 @@ public class ItemListFragment extends Fragment {
 
         itemRecyclerView = view.findViewById(R.id.fl_items_rv);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        itemLists = new ArrayList<>();
 
-        init();
+
+        //получение данных с базы
+        dataBaseHelper = new DataBaseHelper(getContext());
+        sqLiteDatabase = dataBaseHelper.getReadableDatabase();
+        cursor = dataBaseHelper.getInfo(sqLiteDatabase);
+        if (cursor.moveToFirst()) {
+            do {
+
+                String name, title;
+                name = cursor.getString(0);
+                title = cursor.getString(1);
+                ItemList item1 = new ItemList();
+                item1.setName(name);
+                item1.setTitle(title);
+                itemLists.add(item1);
+            } while (cursor.moveToNext());
+        }
 
         itemRecyclerView.setAdapter(new ItemListAdapter(getContext(), itemLists, (MainActivity) getActivity()));
-
         itemListAdapter = (new ItemListAdapter(getContext(), itemLists, (MainActivity) getActivity()));
         itemListAdapter.notifyDataSetChanged();
         itemRecyclerView.setAdapter(itemListAdapter);
@@ -49,12 +69,12 @@ public class ItemListFragment extends Fragment {
 
     private void init() {
         ItemList item1 = new ItemList();
-        item1.setId(UUID.randomUUID());
+        item1.setId(1);
         item1.setName("Meizu m3 Note");
         item1.setTitle("16 gb  ");
 
         ItemList item2 = new ItemList();
-        item2.setId(UUID.randomUUID());
+        item2.setId(2);
         item2.setName("iPhone X");
         item2.setTitle("256 gb  ");
 
